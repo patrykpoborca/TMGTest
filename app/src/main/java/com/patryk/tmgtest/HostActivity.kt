@@ -8,7 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.patryk.tmgtest.databinding.ActivityHostBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HostActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHostBinding

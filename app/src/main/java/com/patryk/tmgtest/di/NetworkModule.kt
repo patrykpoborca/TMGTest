@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.patryk.tmgtest.network.TMGApi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,8 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 // you could make change impl based on flavor etc incl base url and level of logging/intercepting
+@InstallIn(SingletonComponent::class)
 @Module
-class NetworkModule() {
+object NetworkModule {
 
     @Singleton
     @Provides

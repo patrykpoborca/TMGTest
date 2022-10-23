@@ -2,15 +2,25 @@ package com.patryk.tmgtest.network.repositories
 
 import android.content.Context
 import com.google.gson.Gson
+import com.patryk.tmgtest.di.SchedulerHelper
+import com.patryk.tmgtest.di.handleThreading
 import com.patryk.tmgtest.models.TMGGameScore
-import com.patryk.tmgtest.models.TMGIndividualScore
 import com.patryk.tmgtest.network.TMGApi
+import com.patryk.tmgtest.utility.deriveTMGScore
 import com.patryk.tmgtest.utility.fromJson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 // Either grabs existing cached data or fetches stubbed data from API
-class FakeDataRepo @Inject constructor(private val api: TMGApi, private val ctx: Context, private val gson: Gson) {
+@Singleton
+class FakeDataRepo @Inject constructor(
+    private val api: TMGApi,
+    @ApplicationContext private val ctx: Context,
+    private val gson: Gson,
+    private val schedulerHelper: SchedulerHelper
+) {
 
     private val inMemoryList: MutableList<TMGGameScore> = mutableListOf()
 
@@ -31,18 +41,13 @@ class FakeDataRepo @Inject constructor(private val api: TMGApi, private val ctx:
         }
         return api.getInitialData()
             .map {
-                it.map { responseItem ->
-                    var winner = TMGIndividualScore(responseItem.p1, responseItem.score1)
-                    var loser = TMGIndividualScore(responseItem.p2, responseItem.score2)
-                    var temp: TMGIndividualScore;
-                    if (winner.score < loser.score) {
-                        temp = loser
-                        loser = winner
-                        winner = temp
-                    }
-                    TMGGameScore(
-                        winningScore = winner,
-                        losingScore = loser
+                it.mapIndexed { index, responseItem ->
+                    deriveTMGScore(
+                        responseItem.p1,
+                        responseItem.score1,
+                        responseItem.p2,
+                        responseItem.score2,
+                        index
                     )
                 }
             }
@@ -51,14 +56,32 @@ class FakeDataRepo @Inject constructor(private val api: TMGApi, private val ctx:
                 inMemoryList.addAll(it)
                 saveCache()
             }
+            .handleThreading(schedulerHelper)
     }
 
-    fun saveCache() {
+    fun saveCache(overrideScore: TMGGameScore? = null, isNew: Boolean = false) {
+        if (overrideScore != null) {
+            if (isNew) {
+                inMemoryList.add(overrideScore.copy(
+                    index = inMemoryList.size
+                ))
+            } else {
+                inMemoryList[overrideScore.index] = overrideScore
+            }
+        }
         ctx.getSharedPreferences(FakeDataRepo::class.simpleName, Context.MODE_PRIVATE)
             .edit().apply {
                 putString(TMG_DATA, gson.toJson(inMemoryList))
                 apply()
             }
+    }
+
+    fun delete() {
+        inMemoryList.clear()
+        ctx.getSharedPreferences(FakeDataRepo::class.simpleName, Context.MODE_PRIVATE)
+            .edit()
+            .remove(TMG_DATA)
+            .apply()
     }
 
     companion object {

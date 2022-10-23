@@ -1,7 +1,9 @@
 package com.patryk.tmgtest
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class TMGApp : Application() {
 
     override fun onCreate() {

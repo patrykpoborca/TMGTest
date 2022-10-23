@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -50,6 +51,14 @@ dependencies {
 
     //region utility
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1"
+    implementation 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1'
+    implementation 'com.uber.autodispose2:autodispose-android:2.1.1'
+    implementation 'com.uber.autodispose2:autodispose-lifecycle:2.1.1'
+    implementation 'com.uber.autodispose2:autodispose:2.1.1'
+
+
     //endregion
 
     //region vm
@@ -58,8 +67,10 @@ dependencies {
     //endregion
 
     //region dagger
-    implementation 'com.google.dagger:dagger:2.43.2'
-    kapt 'com.google.dagger:dagger-compiler:2.43.2'
+    implementation 'com.google.dagger:dagger:2.44.2'
+    kapt 'com.google.dagger:dagger-compiler:2.44.2'
+    implementation 'com.google.dagger:hilt-android:2.44.2'
+    kapt 'com.google.dagger:hilt-compiler:2.44.2'
     //endregion
 
     //region networking & serialization
@@ -69,6 +80,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
+
 
     //endregion
 
