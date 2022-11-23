@@ -20,10 +20,10 @@ class ScoresViewModel @Inject constructor(val repo: FakeDataRepo, schedulerHelpe
 
     override fun mapToState(it: ScoreEvents): Observable<ScoreScreenState> {
         return when (it) {
-            onClickAbsorbed -> onClickAbsorbed()
-            onScreenLoad -> onScreenLoad()
+            OnClickAbsorbed -> onClickAbsorbed()
+            OnScreenLoad -> onScreenLoad()
             is FabClicked -> fabClicked(it.score)
-            is onUpdateScoreItem -> onUpdateScoreItem(it.score)
+            is OnUpdateScoreItem -> onUpdateScoreItem(it.score)
             else -> state.toObs()
         }
     }

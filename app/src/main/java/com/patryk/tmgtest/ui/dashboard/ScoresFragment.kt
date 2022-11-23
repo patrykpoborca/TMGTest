@@ -1,21 +1,25 @@
 package com.patryk.tmgtest.ui.dashboard
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.patryk.tmgtest.utility.deriveTMGScore
 import androidx.recyclerview.widget.RecyclerView
 import autodispose2.AutoDispose.autoDisposable
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
 import com.patryk.tmgtest.R
 import com.patryk.tmgtest.databinding.FragmentScoresBinding
 import com.patryk.tmgtest.ui.reusable.TMGScoresRecyclerAdapter
+import com.patryk.tmgtest.utility.deriveTMGScore
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ScoresFragment : Fragment() {
@@ -39,24 +43,29 @@ class ScoresFragment : Fragment() {
         _binding = FragmentScoresBinding.inflate(inflater, container, false)
         binding.scoresRecycler.adapter = adapter
         binding.scoresRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+            .apply {
+                reverseLayout = true;
+                stackFromEnd = true;
+            }
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
         setupListeners()
-        scoresViewModel.eventStream.onNext(onScreenLoad)
+        scoresViewModel.eventStream.onNext(OnScreenLoad)
     }
 
     private fun setupListeners() {
         scoresViewModel.listenToVMEffects(requireContext(), this) {
-            if (it is ScoreUpdateEffect)
+            if (it is ScoreUpdateEffect) {
                 adapter.onSaveUpdate(it.score)
+            }
         }
         adapter.updateListener = { item ->
-            scoresViewModel.eventStream.onNext(onUpdateScoreItem(item))
+            scoresViewModel.eventStream.onNext(OnUpdateScoreItem(item))
         }
-        binding.clickAbsorber.setOnClickListener { scoresViewModel.eventStream.onNext(onClickAbsorbed) }
+        binding.clickAbsorber.setOnClickListener { scoresViewModel.eventStream.onNext(OnClickAbsorbed) }
 
         setupFabLogic()
 
@@ -71,8 +80,10 @@ class ScoresFragment : Fragment() {
                 } else {
                     binding.clickAbsorber.visibility = View.GONE
                     binding.fab.setImageResource(R.drawable.ic_baseline_add_24)
+                    val imm: InputMethodManager? = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm?.hideSoftInputFromWindow(binding.p1Score.windowToken, 0)
                 }
-                adapter.updateData(it.tmgGameScores)
+                adapter.updateData(it.tmgGameScores, binding.scoresRecycler)
             },
                 {
                     Log.e("Error", "Subscription failure", it)

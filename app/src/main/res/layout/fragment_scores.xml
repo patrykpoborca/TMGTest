@@ -17,58 +17,62 @@
         android:id="@+id/click_absorber"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/semi_transparent"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/semi_transparent">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/purple_200"
-        android:id="@+id/add_"
-        android:layout_gravity="bottom"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintWidth_percent="0.5"
-            android:layout_width="0dp"
-            android:hint="@string/person_one"
-            app:layout_constraintWidth_default="percent"
-            android:layout_height="wrap_content"
-            android:id="@+id/p1_name"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom"
+            android:background="@color/purple_200">
 
-        <com.google.android.material.textfield.TextInputEditText
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_percent="0.5"
-            android:layout_width="0dp"
-            android:hint="@string/score"
-            app:layout_constraintWidth_default="percent"
-            android:layout_height="wrap_content"
-            android:id="@+id/p1_score"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/p1_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/person_one"
+                android:inputType="textPersonName"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.5" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            app:layout_constraintTop_toBottomOf="@id/p1_name"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintWidth_percent="0.5"
-            android:layout_width="0dp"
-            android:hint="@string/person_two"
-            app:layout_constraintWidth_default="percent"
-            android:layout_height="wrap_content"
-            android:id="@+id/p2_name"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/p1_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/score"
+                android:inputType="number"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.5" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            app:layout_constraintTop_toBottomOf="@id/p1_score"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_percent="0.5"
-            android:layout_width="0dp"
-            android:hint="@string/score"
-            app:layout_constraintWidth_default="percent"
-            android:layout_height="wrap_content"
-            android:id="@+id/p2_score"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/p2_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/person_two"
+                android:inputType="textPersonName"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/p1_name"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.5" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/p2_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/score"
+                android:inputType="number"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/p1_score"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -31,24 +31,38 @@ class TMGScoresRecyclerAdapter : RecyclerView.Adapter<TMGScoreItemViewHolder>() 
 
     fun onSaveUpdate(update: TMGGameScore?) {
         vhInEditMode?.onSaveUpdate(update)
+        vhInEditMode = null
     }
 
     override fun getItemCount(): Int = scores.size
-    fun updateData(data: List<TMGGameScore>) {
+    fun updateData(data: List<TMGGameScore>, scoresRecycler: RecyclerView) {
         // no update
         if (scores == data || data.isEmpty())
             return
-        if (scores.size == 0) {
-            scores.clear()
-            scores.addAll(data)
-            //blowup whole data as it's destructive operation
-            notifyDataSetChanged()
+        when (scores.size) {
+            data.size -> {
+                data.filterIndexed { index, item -> scores[index] != item }.firstOrNull()
+                    ?.let { diff ->
+                        scores[diff.index] = diff
+                        notifyItemChanged(diff.index)
+                        scoresRecycler
+                            .scrollToPosition(diff.index)
+                    }
+            }
+            0 -> {
+                scores.clear()
+                scores.addAll(data)
+                //blowup whole data as it's destructive operation
+                notifyDataSetChanged()
+            }
+            else -> {
+                // lazy way of a diffutil as we have no delete operation
+                scores.add(data.last())
+                notifyItemInserted(scores.size)
+                scoresRecycler.scrollToPosition(scores.size - 1)
+            }
         }
-        else {
-            // lazy way of a diffutil as we have no delete operation
-            scores.add(data.last())
-            notifyItemInserted(scores.size)
-        }
+
     }
 
 

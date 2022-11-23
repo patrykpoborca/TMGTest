@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TMGTest</string>
     <string name="title_activity_host">HostActivity</string>
-    <string name="title_home">Home</string>
+    <string name="title_leaderboards">Leaderboards</string>
     <string name="title_scores">Scores</string>
     <string name="title_settings">Settings</string>
     <string name="delete_cache">Your data is cached locally. If you want to delete press the button</string>
@@ -16,4 +16,8 @@
     <string name="person_two">Player two</string>
     <string name="on_score_created">Score created</string>
     <string name="on_score_failed">Score invalid, did not make</string>
+    <string name="games_played">Games Played</string>
+    <string name="games_won">Games Won</string>
+    <string name="win_ratio">Win Ratio</string>
+    <string name="win_games_games_won">Win% / Games / Games Won</string>
 </resources>
